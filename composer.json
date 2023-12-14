@@ -1,0 +1,21 @@
+{
+    "name": "nailfor/shazam-api",
+    "description": "Fast API development",
+    "keywords": ["laravel", "shazam", "api"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nailfor"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "nailfor\\shazam\\API\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "minimum-stability": "dev"
+}
