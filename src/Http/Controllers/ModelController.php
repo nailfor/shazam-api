@@ -63,7 +63,7 @@ abstract class ModelController extends Controller
             if (method_exists($e, 'getCode')) {
                 $code = $e->getCode();
             }
-
+            
             return $this->error($code, $e->getMessage());
         }
 
@@ -151,7 +151,7 @@ abstract class ModelController extends Controller
         return response(['error' => $message], $code);
     }
 
-    protected function getModel(Request $request): APIRepositoryInterface
+    public function getModel(Request $request): APIRepositoryInterface
     {
         if (!$this->modelRequest) {
             return $this->model;

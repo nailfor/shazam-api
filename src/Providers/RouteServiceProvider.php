@@ -9,8 +9,6 @@ use nailfor\shazam\API\Helpers\FileIterator;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public const HOME = '/';
-
     protected array $routesDisabled = [];
 
     protected string $path = '';
@@ -119,11 +117,18 @@ class RouteServiceProvider extends ServiceProvider
                 continue;
             }
 
-            $key = $route[0];
-            $routes[$key] = "{$this->namespace}\\{$resource}\\{$route[1]}";
+            $this->pushRoute($resource, $route, $routes);
         }
 
         return $routes;
+    }
+
+    protected function pushRoute(string $resource, array $route, array &$routes): void
+    {
+        $name = $route[0];
+        $key = mb_strtolower("$resource/$name");
+
+        $routes[$key] = "{$this->namespace}\\{$resource}\\{$route[1]}";
     }
 
     protected function getRoute(string $resource, string $class): array
@@ -136,9 +141,8 @@ class RouteServiceProvider extends ServiceProvider
         }
 
         $name = str_replace('Controller', '', $className);
-        $route = mb_strtolower("$resource/$name");
 
-        return [$route, $class];
+        return [$name, $class];
     }
 
     protected function getClassName(string $class): string
