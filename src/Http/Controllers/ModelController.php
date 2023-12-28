@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class ModelController extends Controller
 {
-    protected static $requests = [];
+    protected static array $requests = [];
 
     /**
      * Stores the name of the request variable that determines the name of the repository.

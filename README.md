@@ -88,6 +88,85 @@ class UserController extends ApiController
     }
 }
 ```
+You can specify rules for your controllers with
+```php
+class UserController extends ApiController
+{
+    //By default can't store and destroy
+    protected array $can = [
+        'store',
+    ];
+
+    //By default can index and show
+    protected array $cant = [
+        'index', //de
+        'show',
+    ];
+    ...
+}
+```
+
+
+#### Request validations
+
+- Create subdirectory in Http/Requests
+- Add request file or just run ./artisan make:request StoreRequest
+
+StoreRequest.php 
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'id' => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'id.required' => 'Id is require',
+        ];
+    }
+}
+```
+
+Now you can edit your controller class like that
+```php
+class UserController extends ApiController
+{
+    protected static array $requests = [
+        'store' => StoreRequest::class,
+    ];
+    ...
+}
+```
+When 'store' is one of Laravel CRUD operations: index, show, store and destroy
+
+- Edit app\Http\Kernel.php, find "protected $middlewareGroups = [...]" and add to each
+```php
+    \nailfor\shazam\API\Http\Middleware\RequestValidator::class,
+```
 
 After that you can do get request like http:://localhost/api/user
 
