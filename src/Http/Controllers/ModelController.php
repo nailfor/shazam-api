@@ -4,6 +4,7 @@ namespace nailfor\shazam\API\Http\Controllers;
 
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use nailfor\shazam\API\Factory\ClassReplacer;
@@ -56,19 +57,22 @@ abstract class ModelController extends Controller
     {
         $model = $this->getModel($request);
 
+        $code = 400;
         try {
             $response = $model->store($request);
+        } catch (QueryException $e) {
+            return $this->error($code, $e->getMessage());
         } catch (Exception $e) {
-            $code = 400;
             if (method_exists($e, 'getCode')) {
                 $code = $e->getCode();
             }
-            
+            $code = $code ? : 400;
+
             return $this->error($code, $e->getMessage());
         }
 
         if ($response === false) {
-            return $this->error(400, 'error');
+            return $this->error($code, 'error');
         }
 
         return $response;
@@ -76,7 +80,6 @@ abstract class ModelController extends Controller
 
     /**
      * Display the specified resource.
-     *
      *
      */
     public function show(Request $request, mixed $id): mixed
@@ -100,7 +103,6 @@ abstract class ModelController extends Controller
 
     /**
      * Destroy ID from model.
-     *
      *
      */
     public function destroy(Request $request, mixed $id): mixed
