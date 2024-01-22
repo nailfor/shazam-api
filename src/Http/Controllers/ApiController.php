@@ -19,7 +19,7 @@ abstract class ApiController extends AccessController
         //for show method you can used /{id} or ?id={id}
         $id = $request->get('id');
         if ($id) {
-            return $this->show($request, (int) $id);
+            return $this->show($request, $id);
         }
 
         return parent::index($request);
