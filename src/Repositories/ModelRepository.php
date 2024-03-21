@@ -64,14 +64,16 @@ abstract class ModelRepository extends ObjectRepository
 
     protected function getPaginate(Builder $query, Request $request): mixed
     {
-        $perPage = (int) $request->get('per_page', $this->perPage);
+        $key = config('shazam.pages.perPage', 'per_page');
+        $perPage = (int) $request->get($key, $this->perPage);
 
         if ($this->withPaginate) {
             return $query->paginate($perPage);
         }
 
         // Starting page == 1
-        $page = (int) $request->get('page');
+        $key = config('shazam.pages.page', 'page');
+        $page = (int) $request->get($key);
         $page = $page > 0 ? $page : 1;
 
         return $query

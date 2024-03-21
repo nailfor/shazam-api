@@ -42,6 +42,10 @@ return [
         'API',
     ],
     'paginator' => Paginator::class,
+    'pages' => [
+        'perPage' => 'per_page',
+        'page' => 'page',
+    ],
 
     'debug' => env('SQL_DEBUG', false),
 ];
