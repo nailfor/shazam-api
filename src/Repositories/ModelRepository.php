@@ -92,10 +92,11 @@ abstract class ModelRepository extends ObjectRepository
             if (is_numeric($key)) {
                 $key = $scope;
             }
-            $param = $request->get($key, null);
+            $hasParam = $request->has($key);
 
-            if ($param !== null) {
+            if ($hasParam) {
                 $defaultScope = '';
+                $param = $request->get($key);
                 $query = $this->setScope($query, $scope, $param);
             }
         }
@@ -105,7 +106,6 @@ abstract class ModelRepository extends ObjectRepository
 
         return $query;
     }
-
     /**
      * Apply static scope from $this->scopes.
      *

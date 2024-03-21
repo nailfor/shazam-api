@@ -99,7 +99,7 @@ class UserController extends ApiController
 
     //By default can index and show
     protected array $cant = [
-        'index', //de
+        'index',
         'show',
     ];
     ...
