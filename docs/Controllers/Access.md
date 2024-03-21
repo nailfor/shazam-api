@@ -1,6 +1,6 @@
-## Rules
+## Access
 
-You can specify rules for your controllers with
+You can specify access for your controllers with
 ```php
 
 namespace App\Http\Controllers\API;

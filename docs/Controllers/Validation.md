@@ -1,4 +1,17 @@
-## Request validation
+## Configuration
+
+Kernel.php
+```php
+    protected $middlewareGroups = [
+        'api' => [
+            //...
+
+            \nailfor\shazam\API\Http\Middleware\RequestValidator::class;
+        ]
+    ]
+```
+
+## Validation
 
 ```php
 
