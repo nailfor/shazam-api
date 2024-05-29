@@ -98,7 +98,7 @@ abstract class ModelRepository extends ObjectRepository
 
             if ($hasParam) {
                 $defaultScope = '';
-                $param = $request->get($key);
+                $param = $request->input($key);
                 $query = $this->setScope($query, $scope, $param);
             }
         }
