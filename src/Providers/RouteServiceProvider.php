@@ -128,6 +128,7 @@ class RouteServiceProvider extends ServiceProvider
         $name = $route[0];
         $key = mb_strtolower("$resource/$name");
 
+        $resource = str_replace('/', '\\', $resource);
         $routes[$key] = "{$this->namespace}\\{$resource}\\{$route[1]}";
     }
 
