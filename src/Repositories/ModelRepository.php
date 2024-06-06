@@ -66,14 +66,14 @@ abstract class ModelRepository extends ObjectRepository
     {
         $perPage = config('shazam.pages.perPage', 'per_page');
         $name = config('shazam.pages.page', 'page');
-        $perPage = (int) $request->get($perPage, $this->perPage);
+        $perPage = (int) $request->input($perPage, $this->perPage);
 
         if ($this->withPaginate) {
             return $query->paginate($perPage, ['*'], $name);
         }
 
         // Starting page == 1
-        $page = (int) $request->get($name, 0);
+        $page = (int) $request->input($name, 0);
         $page = $page > 0 ? $page : 1;
 
         return $query
