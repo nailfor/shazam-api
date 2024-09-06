@@ -86,8 +86,6 @@ abstract class ModelController extends Controller
     {
         $model = $this->getModel($request);
 
-        $response = '';
-
         try {
             $response = $model->getResource($id);
         } catch (NotFoundHttpException $e) {

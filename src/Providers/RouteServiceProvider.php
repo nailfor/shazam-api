@@ -5,6 +5,7 @@ namespace nailfor\shazam\API\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Router;
 use nailfor\shazam\API\Helpers\FileIterator;
 
 class RouteServiceProvider extends ServiceProvider
@@ -90,7 +91,27 @@ class RouteServiceProvider extends ServiceProvider
             'as' => $as,
         ];
 
-        Route::group($resource, fn () => Route::resources($routes));
+        Route::group($resource, fn (Router $router) => $this->registrar($routes, $router));
+    }
+
+    protected function registrar(array $routes, Router $router): void
+    {
+        foreach ($routes as $name => $controller) {
+            $options = [];
+            if (method_exists($controller, 'getRoute')) {
+                $options = $controller::getRoute();
+                $params = $options['parameters'] ?? [];
+                if ($params)
+                {
+                    $keys = array_keys($params);
+                    $base = explode('/', $name);
+                    $base = end($base);
+                    $options['parameters'][$base] = implode('}/{', $keys);
+                    $options['wheres'] = $params;
+                }
+            }
+            $router->resource($name, $controller, $options);
+        }
     }
 
     protected function getRoutes(string $resource): array

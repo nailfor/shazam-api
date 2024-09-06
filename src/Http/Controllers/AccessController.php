@@ -18,6 +18,28 @@ abstract class AccessController extends ModelController
      */
     protected array $cant = [];
 
+    protected static array $route = [];
+
+    protected static $resourceDefaults = [
+        'index',
+        'store',
+        'show',
+        'destroy',
+    ];
+
+    /**
+     * Make routes
+     * @return array
+     */
+    public static function getRoute(): array
+    {
+        $route = static::$route;
+        $only = $route['only'] ?? static::$resourceDefaults;
+        $route['only'] = $only;
+
+        return $route;
+    }
+
     /**
      * @inheritDoc
      */
