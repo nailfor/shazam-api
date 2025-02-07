@@ -42,7 +42,12 @@ abstract class ModelController extends Controller
         try {
             $response = $model->getCollection($request);
         } catch (Exception $e) {
-            return $this->error(400, $e->getMessage());
+            if (method_exists($e, 'getCode')) {
+                $code = $e->getCode();
+            }
+            $code = $code ? : 400;
+
+            return $this->error($code, $e->getMessage());
         }
 
         return $response;
